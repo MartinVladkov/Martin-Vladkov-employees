@@ -10,14 +10,14 @@ namespace Employees.Controllers
     public class EmployeesController : Controller
     {
         [HttpGet]
-        public IActionResult ProcessEmployees()
+        public IActionResult ProcessEmployees(List<Employee> employees = null)
         {
-
-            return View();
+            employees = employees == null ? new List<Employee>() : employees;
+            return View(employees);
         }
 
         [HttpPost]
-        public IActionResult ProcessEmployees(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+        public IActionResult ProcessEmployees(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
             //List<Employee> values = ReadAsList(file)
             //                            .Select(v => MapEmployeeFromCsv(v))
@@ -29,9 +29,9 @@ namespace Employees.Controllers
                 file.CopyTo(fileStream); 
                 fileStream.Flush();
             }
-            var employees = MapEmployeeFromCsv(fileName);
+            var employees = MapEmployeeFromCsv(file.FileName);
 
-            return View();
+            return View(employees);
         }
 
         private List<Employee> MapEmployeeFromCsv(string fileName)

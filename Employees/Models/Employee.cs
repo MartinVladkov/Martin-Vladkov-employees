@@ -11,9 +11,9 @@ namespace Employees.Models
         public int ProjectId { get; set; }
 
         [Index(2)]
-        public DateOnly DateFrom { get; set; }
+        public string DateFrom { get; set; }
 
         [Index(3)]
-        public DateOnly DateTo { get; set; }
+        public string DateTo { get; set; }
     }
 }
