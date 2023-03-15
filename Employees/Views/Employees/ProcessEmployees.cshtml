@@ -1,7 +1,4 @@
-﻿@model IEnumerable<Employee>
-@{
-
-}
+﻿@model PairOfEmployees
 
 <form asp-controller="Employees" asp-action="ProcessEmployees" method="post" enctype="multipart/form-data">
     <input type="file" name="file" accept/>
@@ -9,9 +6,25 @@
     <button type="submit">Upload</button>
 </form>
 
-@if(Model.Count() > 0)
-{
-    <hr />
+@*@if(Model.Count() > 0)*@
+<hr />
+@if(Model.Id != 0){
+<table cellpadding="3" cellspacing="3" border="1">
+    <tr>
+        <td>Employee ID #1</td>
+        <td>Employee ID #2</td>
+        <td>Days worked</td>
+    </tr>
+    <tr>
+        <td>@Model.EmployeeId1</td>
+        <td>@Model.EmployeeId2</td>
+        <td>@Model.Days</td>
+    </tr>
+</table>
+}
+
+
+@*    <hr />
     <table cellpadding="0" cellspacing="0" border="1">
         <tr>
             <td>Employee ID #1</td>
@@ -28,5 +41,5 @@
                 <td>@employee.DateTo</td>
             </tr>
         }
-    </table>
-}
+    </table>*@
+
