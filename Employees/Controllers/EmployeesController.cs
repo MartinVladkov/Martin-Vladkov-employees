@@ -19,10 +19,6 @@ namespace Employees.Controllers
         [HttpPost]
         public IActionResult ProcessEmployees(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
-            //List<Employee> values = ReadAsList(file)
-            //                            .Select(v => MapEmployeeFromCsv(v))
-            //                            .ToList();
-
             string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
             using(FileStream fileStream = System.IO.File.Create(fileName))
             {
@@ -30,6 +26,8 @@ namespace Employees.Controllers
                 fileStream.Flush();
             }
             var employees = MapEmployeeFromCsv(file.FileName);
+
+            var longestWorkingPair = LongestWorkingPair(employees);
 
             return View(employees);
         }
@@ -43,23 +41,58 @@ namespace Employees.Controllers
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
-                csv.Read();
+                var line = csv.Read();
                 csv.ReadHeader();
                 while (csv.Read())
                 {
-                    var employee = csv.GetRecord<Employee>();
+                    var csvEmployee = csv.GetRecord<CsvEmployee>();
+
+                    var employee = new Employee();
+                    employee.Id = csvEmployee.Id;
+                    employee.ProjectId = csvEmployee.ProjectId;
+                    employee.DateFrom = DateOnly.FromDateTime(Convert.ToDateTime(csvEmployee.DateFrom));
+
+                    if (csvEmployee.DateTo.ToLower() == "null")
+                    {
+                        employee.DateTo = DateOnly.FromDateTime(DateTime.Now);
+                    }
+
                     employees.Add(employee);
                 }
             }
 
-            //string[] values = csvLine.Split(',');
-
-            //employee.Id = Convert.ToInt32(values[0]);
-            //employee.ProjectId = Convert.ToInt32(values[1]);
-            //employee.DateFrom = DateOnly.FromDateTime(Convert.ToDateTime(values[3]));
-            //employee.DateTo = DateOnly.FromDateTime(Convert.ToDateTime(values[4]));
-
             return employees;
+        }
+
+        private string LongestWorkingPair(List<Employee> employees)
+        {
+            var groupedByProject = employees
+                            .Select(e => e)
+                            .GroupBy(e => e.ProjectId)
+                            .ToList();
+
+            var pairs = groupedByProject
+                            .Select(e => e);
+
+            foreach (var project in groupedByProject)
+            {
+                for(int i = 0; i < project.Count(); i++)
+                {
+                    for(int j = i + 1; j < project.Count(); j++)
+                    {
+                        bool overlap = project.ElementAt(i).DateFrom < project.ElementAt(j).DateTo && project.ElementAt(j).DateFrom < project.ElementAt(i).DateTo;
+                        if (overlap)
+                        {
+
+                        }
+                    }
+                }
+
+            }
+
+            string result = "";
+
+            return result;
         }
     }
 }
