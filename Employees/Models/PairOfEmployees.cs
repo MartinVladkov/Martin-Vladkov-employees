@@ -8,6 +8,8 @@
 
         public int EmployeeId2 { get; set; }
 
-        public string Days { get; set; }
+        public int Days { get; set; }
+
+        public List<int> Projects { get; set; } = new List<int>();
     }
 }
