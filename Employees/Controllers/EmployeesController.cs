@@ -18,9 +18,9 @@ namespace Employees.Controllers
         }
 
         [HttpGet]
-        public IActionResult ProcessEmployees(PairOfEmployees pair = null)
+        public IActionResult ProcessEmployees(PairOfEmployeesViewModel pair = null)
         {
-            pair = pair == null ? new PairOfEmployees() : pair;
+            pair = pair == null ? new PairOfEmployeesViewModel() : pair;
             return View(pair);
         }
 
@@ -37,7 +37,15 @@ namespace Employees.Controllers
 
             var longestWorkingPair = processEmployeeService.GetLongestWorkingPair(pairsOfEmployees);
 
-            return View(longestWorkingPair);
+            var viewModel = new PairOfEmployeesViewModel
+            {
+                EmployeeId1 = longestWorkingPair.EmployeeId1,
+                EmployeeId2 = longestWorkingPair.EmployeeId2,
+                Days = longestWorkingPair.Days,
+                PairsOfEmployees = pairsOfEmployees
+            };
+
+            return View(viewModel);
         }
     }
 }
