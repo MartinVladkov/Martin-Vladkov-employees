@@ -27,6 +27,19 @@ namespace Employees.Controllers
         [HttpPost]
         public IActionResult ProcessEmployees(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
+            if(file == null)
+            {
+                //show error
+                //ModelState.AddModelError(nameof(file), "A CSV file must be attached.");
+            }
+
+            var extension = file.FileName.Split(".");
+            if (extension[extension.Length - 1].ToLower() != "csv")
+            {
+                //throw model view error
+                var a = 0;
+            }
+
             string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
 
             processEmployeeService.WriteFileToLocalStorage(file, fileName);

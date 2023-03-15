@@ -34,7 +34,10 @@ namespace Employees.Services.Employees
 
                     employee.Id = csvEmployee.Id;
                     employee.ProjectId = csvEmployee.ProjectId;
-                    employee.DateFrom = Convert.ToDateTime(csvEmployee.DateFrom);
+
+                    string[] formats = {"yy/MM/dd", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "MM/DD/YY", "DD/MM/YY", "YY/MM/DD", "M/D/YY", "D/M/YY", "YY/M/D", "M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy", "dd/MM/yy" };
+                    employee.DateFrom = DateTime.ParseExact(csvEmployee.DateFrom, formats, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    //employee.DateFrom = DateTime.Parse(csvEmployee.DateFrom);
 
                     if (csvEmployee.DateTo.ToLower() == "null")
                     {
@@ -42,7 +45,7 @@ namespace Employees.Services.Employees
                     }
                     else
                     {
-                        employee.DateTo = Convert.ToDateTime(csvEmployee.DateTo);
+                        employee.DateTo = DateTime.ParseExact(csvEmployee.DateTo, formats, CultureInfo.InvariantCulture, DateTimeStyles.None); ;
                     }
 
                     employees.Add(employee);
