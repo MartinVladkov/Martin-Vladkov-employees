@@ -17,5 +17,5 @@ This web app takes a CSV file with information about employees and projects and 
 ## Screenshots
 ![Upload](Images/Upload.PNG)
 ![Employees](Images/Employees.PNG)
-![Null_Error](Images/Null_Error.PNG)
-![Type_Error](Images/Type_Error.PNG)
+![Null_Validatio](Images/Null_Validatio.PNG)
+![Type_Validation](Images/Type_Validation.PNG)
