@@ -32,12 +32,17 @@ namespace Employees.Services.Employees
 
                     var employee = new Employee();
 
+                    if (csvEmployee.Id == 0 || csvEmployee.ProjectId == 0 || csvEmployee.DateFrom.ToLower() == "null" || csvEmployee.DateFrom == "")
+                    {
+                        continue;
+                    }
+
                     employee.Id = csvEmployee.Id;
                     employee.ProjectId = csvEmployee.ProjectId;
 
-                    string[] formats = {"yy/MM/dd", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "MM/DD/YY", "DD/MM/YY", "YY/MM/DD", "M/D/YY", "D/M/YY", "YY/M/D", "M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy", "dd/MM/yy" };
+                    string[] formats = {"yy/MM/dd", "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "MM/DD/YY", "DD/MM/YY", "YY/MM/DD", 
+                        "M/D/YY", "D/M/YY", "YY/M/D", "M-d-yyyy", "dd-MM-yyyy", "MM-dd-yyyy", "M.d.yyyy", "dd.MM.yyyy", "MM.dd.yyyy", "dd/MM/yy" };
                     employee.DateFrom = DateTime.ParseExact(csvEmployee.DateFrom, formats, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    //employee.DateFrom = DateTime.Parse(csvEmployee.DateFrom);
 
                     if (csvEmployee.DateTo.ToLower() == "null")
                     {

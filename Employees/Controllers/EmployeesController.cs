@@ -27,19 +27,21 @@ namespace Employees.Controllers
         [HttpPost]
         public IActionResult ProcessEmployees(IFormFile file, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment)
         {
+            //Input file validation
             if(file == null)
             {
-                //show error
-                //ModelState.AddModelError(nameof(file), "A CSV file must be attached.");
+                ModelState.AddModelError("EmployeeId1", "A CSV file must be attached.");
+                return View(new PairOfEmployeesViewModel());
             }
 
             var extension = file.FileName.Split(".");
             if (extension[extension.Length - 1].ToLower() != "csv")
             {
-                //throw model view error
-                var a = 0;
+                ModelState.AddModelError("EmployeeId2", "File can only be of type CSV.");
+                return View(new PairOfEmployeesViewModel());
             }
 
+            //Processing file
             string fileName = $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
 
             processEmployeeService.WriteFileToLocalStorage(file, fileName);
@@ -50,6 +52,7 @@ namespace Employees.Controllers
 
             var longestWorkingPair = processEmployeeService.GetLongestWorkingPair(pairsOfEmployees);
 
+            //Creating view model
             var viewModel = new PairOfEmployeesViewModel
             {
                 EmployeeId1 = longestWorkingPair.EmployeeId1,
