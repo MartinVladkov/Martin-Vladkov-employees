@@ -5,6 +5,7 @@
   border-collapse: separate;
   border-spacing: 0 10px;
 }
+
 td:first-child,
 th:first-child {
   border-radius: 7px 0 0 7px;
@@ -31,10 +32,7 @@ th{
      text-align: center;
 }
 
-
 </style>
-
-
 
 <div class="row">
     <div class="card mt-5" style="width: 50rem;">
@@ -49,34 +47,61 @@ th{
     </div>
     </form>
     </div>
-    </div>
 </div>
 
-<hr />
-@if(@Model.EmployeeId1 != 0)
-{
- <div class="card mt-5" style="width: 50rem;">
-        <div class="card-body">
-        <h5 class="card-title">Longest Working Pair of Employees</h5>
+@if (@Model.Id != 0)
+    {
+    <div class="card mt-5" style="width: 50rem;">
+    <div class="card-body">
+    <h5 class="card-title">Longest Working Pair of Employees</h5>
+    <table class="table table-striped table-hover table-responsive mt-2 mb-2">
+        <thead>
+        <tr>
+            <td>Employee ID #1</td>
+            <td>Employee ID #2</td>
+            <td>Days worked</td>
+        </tr>
+        </thead>
+        <tr>
+            <td>@Model.EmployeeId1</td>
+            <td>@Model.EmployeeId2</td>
+            <td>@Model.Days</td>
+        </tr>
+     </table>
+      </div>
+      </div>
+
+<div class="card mt-5" style="width: 50rem;">
+<div class="card-body">
+        <h5 class="card-title">Longest Working Pair - Projects</h5>
         <table class="table table-striped table-hover table-responsive mt-2 mb-2">
-            <thead>
+        <thead>
     <tr>
         <td>Employee ID #1</td>
         <td>Employee ID #2</td>
+        <td>Project ID</td>
         <td>Days worked</td>
     </tr>
-    <tr>
-        <td>@Model.EmployeeId1</td>
-        <td>@Model.EmployeeId2</td>
-        <td>@Model.Days</td>
-    </tr>
+    </thead>
+    @foreach(PairOfEmployees pair in @Model.PairsOfEmployees.Where(p => p.Id == @Model.Id))
+    {
+        <tr>
+            <td>@pair.EmployeeId1</td>
+            <td>@pair.EmployeeId2</td>
+            @foreach(var pId in pair.Projects)
+                {
+                    <td>@pId</td>   
+                }  
+            <td>@pair.Days</td>
+        </tr>
+    }
 </table>
-  </div>
 </div>
-}
+</div>
 
+    }
 
-@if (@Model.EmployeeId1 != 0)
+@if (@Model.Id != 0)
 {
 <div class="card mt-5" style="width: 50rem;">
         <div class="card-body">
@@ -90,16 +115,16 @@ th{
             <td>Days worked</td>
         </tr>
         </thead>
-        @foreach(PairOfEmployees employee in Model.PairsOfEmployees)
+        @foreach(PairOfEmployees pair in Model.PairsOfEmployees)
         {
             <tr>
-                <td>@employee.EmployeeId1</td>
-                <td>@employee.EmployeeId2</td>
-                @foreach(var pId in employee.Projects)
+                <td>@pair.EmployeeId1</td>
+                <td>@pair.EmployeeId2</td>
+                @foreach(var pId in pair.Projects)
                 {
                     <td>@pId</td>   
                 }
-                <td>@employee.Days</td>
+                <td>@pair.Days</td>
             </tr>
         }
     </table>

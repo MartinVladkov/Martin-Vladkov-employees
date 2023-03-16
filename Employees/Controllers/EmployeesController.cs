@@ -1,10 +1,6 @@
-﻿using CsvHelper;
-using Employees.Models;
+﻿using Employees.Models;
 using Employees.Services.Employees;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
-using System.Text;
-using System.Web;
 
 namespace Employees.Controllers
 {
@@ -55,6 +51,7 @@ namespace Employees.Controllers
             //Creating view model
             var viewModel = new PairOfEmployeesViewModel
             {
+                Id = longestWorkingPair.Id,
                 EmployeeId1 = longestWorkingPair.EmployeeId1,
                 EmployeeId2 = longestWorkingPair.EmployeeId2,
                 Days = longestWorkingPair.Days,
